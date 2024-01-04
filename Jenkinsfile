@@ -97,14 +97,31 @@ pipeline {
                  sh "docker rmi $registry:V$BUILD_NUMBER"
             }
         }
-
-        stage('Kubernetes Deploy'){
-            // agent {label 'KOPS'}
-            steps{
-                sh "cd ~/cicd-kube-docker/"
-                sh "helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod"
+        stage('Deploying to Kubernetes') {
+            steps {
+                script {
+                kubernetesDeploy(configs: "helm/vprofilecharts/templates/app-secret.yml"
+                , "helm/vprofilecharts/templates/db-CIP.yml"
+                , "helm/vprofilecharts/templates/mc-CIP.yml"
+                , "helm/vprofilecharts/templates/mcdep.yml"
+                , "helm/vprofilecharts/templates/rmq-CIP-service.yml"
+                , "helm/vprofilecharts/templates/rmq-dep.yml"
+                , "helm/vprofilecharts/templates/vproapp-service.yml"
+                , "helm/vprofilecharts/templates/vproappdep.yml"
+                , "helm/vprofilecharts/templates/vprodbdep.yml"
+                )
+                }
             }
         }
+        // stage('Kubernetes Deploy'){
+        //     // agent {label 'KOPS'}
+        //     steps{
+        //         sh "cd ~/cicd-kube-docker/"
+        //         sh "helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod"
+        //     }
+        // }
+
+
 
     }
 
