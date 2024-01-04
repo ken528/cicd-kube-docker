@@ -97,29 +97,30 @@ pipeline {
                  sh "docker rmi $registry:V$BUILD_NUMBER"
             }
         }
-        stage('Deploying to Kubernetes') {
-            steps {
-                script {
-                kubernetesDeploy(configs: "kubernetes/vpro-app/app-secret.yml"
-                , "kubernetes/vpro-app/db-CIP.yml"
-                , "kubernetes/vpro-app/mc-CIP.yml"
-                , "kubernetes/vpro-app/mcdep.yml"
-                , "kubernetes/vpro-app/rmq-CIP-service.yml"
-                , "kubernetes/vpro-app/rmq-dep.yml"
-                , "kubernetes/vpro-app/vproapp-service.yml"
-                , "kubernetes/vpro-app/vproappdep.yml"
-                , "kubernetes/vpro-app/vprodbdep.yml"
-                )
-                }
-            }
-        }
-        // stage('Kubernetes Deploy'){
-        //     // agent {label 'KOPS'}
-        //     steps{
-        //         sh "cd ~/cicd-kube-docker/"
-        //         sh "helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod"
+        // stage('Deploying to Kubernetes') {
+        //     steps {
+        //         script {
+        //         kubernetesDeploy(configs: "kubernetes/vpro-app/app-secret.yml"
+        //         , "kubernetes/vpro-app/db-CIP.yml"
+        //         , "kubernetes/vpro-app/mc-CIP.yml"
+        //         , "kubernetes/vpro-app/mcdep.yml"
+        //         , "kubernetes/vpro-app/rmq-CIP-service.yml"
+        //         , "kubernetes/vpro-app/rmq-dep.yml"
+        //         , "kubernetes/vpro-app/vproapp-service.yml"
+        //         , "kubernetes/vpro-app/vproappdep.yml"
+        //         , "kubernetes/vpro-app/vprodbdep.yml"
+        //         )
+        //         }
         //     }
         // }
+        stage('Kubernetes Deploy'){
+            // agent {label 'KOPS'}
+            steps{
+                sh "cd"
+                sh "cd cicd-kube-docker/"
+                sh "helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:V${BUILD_NUMBER} --namespace prod"
+            }
+        }
 
 
 
