@@ -100,15 +100,15 @@ pipeline {
         stage('Deploying to Kubernetes') {
             steps {
                 script {
-                kubernetesDeploy(configs: "helm/vprofilecharts/templates/app-secret.yml"
-                , "helm/vprofilecharts/templates/db-CIP.yml"
-                , "helm/vprofilecharts/templates/mc-CIP.yml"
-                , "helm/vprofilecharts/templates/mcdep.yml"
-                , "helm/vprofilecharts/templates/rmq-CIP-service.yml"
-                , "helm/vprofilecharts/templates/rmq-dep.yml"
-                , "helm/vprofilecharts/templates/vproapp-service.yml"
-                , "helm/vprofilecharts/templates/vproappdep.yml"
-                , "helm/vprofilecharts/templates/vprodbdep.yml"
+                kubernetesDeploy(configs: "kubernetes/vpro-app/app-secret.yml"
+                , "kubernetes/vpro-app/db-CIP.yml"
+                , "kubernetes/vpro-app/mc-CIP.yml"
+                , "kubernetes/vpro-app/mcdep.yml"
+                , "kubernetes/vpro-app/rmq-CIP-service.yml"
+                , "kubernetes/vpro-app/rmq-dep.yml"
+                , "kubernetes/vpro-app/vproapp-service.yml"
+                , "kubernetes/vpro-app/vproappdep.yml"
+                , "kubernetes/vpro-app/vprodbdep.yml"
                 )
                 }
             }
